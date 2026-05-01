@@ -12,7 +12,7 @@
 - HTML / CSS / JavaScript
 
 ## 📸 Screenshots
-(Add images here)
+![Login](frontend/assets/login.png)
 
 ## ⚙️ How to Run
 1. Clone repo
