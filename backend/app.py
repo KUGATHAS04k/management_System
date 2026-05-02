@@ -2,23 +2,21 @@ from flask import Flask, request, jsonify
 from database import create_connection, create_table
 from flask_cors import CORS
 
-
-create_table()
-
 app = Flask(__name__)
 CORS(app)
 
-# Simple staff data (temporary)
+# -------------------
+# USERS
+# -------------------
 users = {
-    "S001": {
-        "pin": "1234",
-        "role": "staff"
-    },
-    "M001": {
-        "pin": "9999",
-        "role": "manager"
-    }
+    "S001": {"pin": "1234", "role": "staff"},
+    "M001": {"pin": "9999", "role": "manager"}
 }
+
+# -------------------
+# ROUTES
+# -------------------
+
 @app.route("/")
 def home():
     return "RMS is running 🚀"
@@ -81,9 +79,11 @@ def get_sales():
 
     conn.close()
     return jsonify(result)
-# run server
+
+
+# -------------------
+# RUN SERVER (ONLY ONCE, LAST)
+# -------------------
 if __name__ == "__main__":
+    create_table()
     app.run(debug=True)
-
-
-
