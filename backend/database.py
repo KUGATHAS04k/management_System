@@ -16,6 +16,7 @@ def create_table():
         card REAL,
         uber REAL,
         date TEXT,
+        shift TEXT,
         staff_id TEXT
     )
     """)

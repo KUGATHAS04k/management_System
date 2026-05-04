@@ -50,15 +50,16 @@ def add_sale():
     card = data.get("card", 0)
     uber = data.get("uber", 0)
     date = data.get("date")
+    shift = data.get('shift')
     staff_id = data.get("staff_id")
 
     conn = create_connection()
     cursor = conn.cursor()
 
     cursor.execute("""
-        INSERT INTO sales (cash, card, uber, date, staff_id)
-        VALUES (?, ?, ?, ?, ?)
-    """, (cash, card, uber, date, staff_id))
+    INSERT INTO sales (cash, card, uber, date, shift, staff_id)
+    VALUES (?, ?, ?, ?, ?, ?)
+    """, (cash, card, uber, date, shift, staff_id))
 
     conn.commit()
     conn.close()
