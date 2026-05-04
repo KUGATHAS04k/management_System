@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>RMS Dashboard</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: Arial, sans-serif;
+      background: #f0f2f5;
+      color: #1a1a1a;
+    }
+
+    header {
+      background: #fff;
+      border-bottom: 1px solid #e0e0e0;
+      padding: 18px 40px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    header .logo {
+      width: 36px;
+      height: 36px;
+      background: #4a90e2;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: bold;
+      font-size: 14px;
+    }
+
+    header h1 {
+      font-size: 18px;
+      font-weight: 600;
+      color: #1a1a1a;
+    }
+
+    .container {
+      max-width: 860px;
+      margin: 32px auto;
+      padding: 0 20px;
+    }
+
+    .card {
+      background: #fff;
+      border-radius: 12px;
+      border: 1px solid #e8e8e8;
+      padding: 24px 28px;
+      margin-bottom: 20px;
+    }
+
+    .card h2 {
+      font-size: 15px;
+      font-weight: 600;
+      color: #333;
+      margin-bottom: 18px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid #f0f0f0;
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    .form-group label {
+      font-size: 12px;
+      font-weight: 600;
+      color: #666;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+    }
+
+    input {
+      padding: 9px 12px;
+      border: 1px solid #ddd;
+      border-radius: 7px;
+      font-size: 14px;
+      color: #1a1a1a;
+      background: #fafafa;
+      width: 100%;
+      transition: border-color 0.15s;
+    }
+
+    input:focus {
+      outline: none;
+      border-color: #4a90e2;
+      background: #fff;
+    }
+
+    .btn {
+      padding: 9px 20px;
+      background: #4a90e2;
+      color: white;
+      border: none;
+      cursor: pointer;
+      border-radius: 7px;
+      font-size: 14px;
+      font-weight: 500;
+      transition: background 0.15s;
+    }
+
+    .btn:hover { background: #357bd8; }
+
+    .btn-outline {
+      background: transparent;
+      color: #4a90e2;
+      border: 1px solid #4a90e2;
+    }
+
+    .btn-outline:hover { background: #f0f7ff; }
+
+    .sales-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 18px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid #f0f0f0;
+    }
+
+    .sales-header h2 { border: none; padding: 0; margin: 0; }
+
+    .sale-item {
+      display: grid;
+      grid-template-columns: 110px 1fr 1fr 1fr auto;
+      align-items: center;
+      gap: 12px;
+      padding: 13px 0;
+      border-bottom: 1px solid #f5f5f5;
+      font-size: 14px;
+    }
+
+    .sale-item:last-child { border-bottom: none; }
+
+    .sale-date {
+      font-weight: 600;
+      font-size: 13px;
+      color: #444;
+    }
+
+    .sale-field {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .sale-field span:first-child {
+      font-size: 11px;
+      color: #999;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+    }
+
+    .sale-field span:last-child {
+      font-weight: 500;
+      color: #1a1a1a;
+    }
+
+    .sale-total {
+      background: #eaf3ff;
+      color: #2271c7;
+      font-weight: 600;
+      font-size: 14px;
+      padding: 5px 12px;
+      border-radius: 20px;
+      text-align: center;
+      white-space: nowrap;
+    }
+
+    #sales-list-empty {
+      text-align: center;
+      color: #aaa;
+      padding: 32px 0;
+      font-size: 14px;
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <div class="logo">R</div>
+  <h1>RMS Dashboard</h1>
+</header>
+
+<div class="container">
+
+  <select id="shift">
+  <option value="Morning">Morning</option>
+  <option value="Evening">Evening</option>
+</select>
+  <!-- ADD SALE -->
+
+  <div class="card">
+    <h2>Add Sale</h2>
+    <div class="form-row">
+      <div class="form-group">
+        <label>Cash</label>
+        <input id="cash" placeholder="0.00" type="number">
+      </div>
+      <div class="form-group">
+        <label>Card</label>
+        <input id="card" placeholder="0.00" type="number">
+      </div>
+      <div class="form-group">
+        <label>Uber</label>
+        <input id="uber" placeholder="0.00" type="number">
+      </div>
+      <div class="form-group">
+        <label>Date</label>
+        <input id="date" type="date">
+      </div>
+    </div>
+    <button class="btn" onclick="addSale()">Submit Sale</button>
+  </div>
+
+  <!-- SALES LIST -->
+  <div class="card">
+    <div class="sales-header">
+      <h2>Sales List</h2>
+      <button class="btn btn-outline" onclick="loadSales()">Refresh</button>
+    </div>
+    <div id="sales"></div>
+  </div>
+
+</div>
+
+<script>
+function addSale() {
+  fetch("http://127.0.0.1:5000/add-sale", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      cash: document.getElementById("cash").value,
+      card: document.getElementById("card").value,
+      uber: document.getElementById("uber").value,
+      date: document.getElementById("date").value,
+      shift: document.getElementById("shift").value,
+      staff_id: "S001"
+    })
+  })
+  .then(res => res.json())
+  .then(data => {
+    alert(data.message);
+    loadSales();
+  });
+}
+
+function loadSales() {
+  fetch("http://127.0.0.1:5000/sales")
+    .then(res => res.json())
+    .then(data => {
+      if (!data.length) {
+        document.getElementById("sales").innerHTML = '<p id="sales-list-empty">No sales yet.</p>';
+        return;
+      }
+
+      let output = "";
+      data.forEach(sale => {
+        let total = (Number(sale.cash) + Number(sale.card) + Number(sale.uber)).toFixed(2);
+        output += `
+          <div class="sale-item">
+            <span class="sale-date">${sale.date}</span>
+            <p><b>Shift:</b> ${sale.shift}</p>  <!-- THIS LINE -->
+            <div class="sale-field"><span>Cash</span><span>£${Number(sale.cash).toFixed(2)}</span></div>
+            <div class="sale-field"><span>Card</span><span>£${Number(sale.card).toFixed(2)}</span></div>
+            <div class="sale-field"><span>Uber</span><span>£${Number(sale.uber).toFixed(2)}</span></div>
+            <span class="sale-total">£${total}</span>
+          </div>
+        `;
+      });
+
+      document.getElementById("sales").innerHTML = output;
+    });
+}
+
+loadSales();
+</script>
+
+</body>
+</html>
